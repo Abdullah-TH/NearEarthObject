@@ -1,4 +1,5 @@
 from models import OrbitPath, NearEarthObject
+import csv
 
 
 class NEODatabase(object):
@@ -37,5 +38,22 @@ class NEODatabase(object):
 
         # TODO: Load data from csv file.
         # TODO: Where will the data be stored?
+        with open(filename) as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                neo_attributes_list = list(row.items())[:14]
+                neo_attributes_dict = dict(neo_attributes_list)
+                orbit_attributes_list = list(row.items())[14:]
+                orbit_attributes_dict = dict(orbit_attributes_list)
+                neo = NearEarthObject(**neo_attributes_dict)
+                orbit = OrbitPath(**orbit_attributes_dict)
+
+                orbit_date_key = orbit.attributes["close_approach_date"]
+                if self.__orbit_date_to_neos.get(orbit_date_key) is None:
+                    self.__orbit_date_to_neos[orbit_date_key] = [neo]
+                else:
+                    self.__orbit_date_to_neos[orbit_date_key].append(neo)
+
+                self.__neos[neo.attributes["name"]] = neo
 
         return None
