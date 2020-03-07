@@ -2,3 +2,4 @@
 /env
 /starter/__pycache__
 /starter/my_test.py
+.DS_Store
