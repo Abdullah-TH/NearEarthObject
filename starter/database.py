@@ -18,8 +18,8 @@ class NEODatabase(object):
         # TODO: What data structures will be needed to store the NearEarthObjects and OrbitPaths?
         # TODO: Add relevant instance variables for this.
         self.filename = filename
-        self.__orbit_date_to_neos = {}
-        self.__neos = {}
+        self.orbit_date_to_neos = {}
+        self.neos = {}
 
     def load_data(self, filename=None):
         """
@@ -48,12 +48,12 @@ class NEODatabase(object):
                 neo = NearEarthObject(**neo_attributes_dict)
                 orbit = OrbitPath(**orbit_attributes_dict)
 
-                orbit_date_key = orbit.attributes["close_approach_date"]
-                if self.__orbit_date_to_neos.get(orbit_date_key) is None:
-                    self.__orbit_date_to_neos[orbit_date_key] = [neo]
+                orbit_date_key = orbit.close_approach_date
+                if self.orbit_date_to_neos.get(orbit_date_key) is None:
+                    self.orbit_date_to_neos[orbit_date_key] = [neo]
                 else:
-                    self.__orbit_date_to_neos[orbit_date_key].append(neo)
+                    self.orbit_date_to_neos[orbit_date_key].append(neo)
 
-                self.__neos[neo.attributes["name"]] = neo
+                self.neos[neo.name] = neo
 
         return None
