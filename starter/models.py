@@ -10,7 +10,8 @@ class NearEarthObject(object):
         :param kwargs:    dict of attributes about a given Near Earth Object, only a subset of attributes used
         """
         # TODO: What instance variables will be useful for storing on the Near Earth Object?
-        self.attributes = kwargs
+        self.id = kwargs.get("id")
+        self.name = kwargs.get("name")
         self.orbits = []
 
     def update_orbits(self, orbit):
@@ -23,6 +24,13 @@ class NearEarthObject(object):
 
         # TODO: How do we connect orbits back to the Near Earth Object?
         self.orbits.append(orbit)
+
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.id == other.id
 
 
 class OrbitPath(object):
@@ -37,5 +45,4 @@ class OrbitPath(object):
         :param kwargs:    dict of attributes about a given orbit, only a subset of attributes used
         """
         # TODO: What instance variables will be useful for storing on the Near Earth Object?
-        self.neo = NearEarthObject()
-        self.attributes = kwargs
+        self.close_approach_date = kwargs.get("close_approach_date")
