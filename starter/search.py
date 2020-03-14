@@ -3,6 +3,7 @@ from enum import Enum
 
 from exceptions import UnsupportedFeature
 from models import NearEarthObject, OrbitPath
+from datetime import datetime
 
 
 class DateSearch(Enum):
@@ -52,9 +53,9 @@ class Query(object):
         return selectors
 
     def __build_date_search(self):
-        date = self.__parameters["date"]
-        start_date = self.__parameters["start_date"]
-        end_date = self.__parameters["end_date"]
+        date = self.__parameters.get("date")
+        start_date = self.__parameters.get("start_date")
+        end_date = self.__parameters.get("end_date")
         if date is not None:
             return self.DateSearch(DateSearch("equals"), [date])
         elif start_date is not None or end_date is not None:
@@ -137,3 +138,30 @@ class NEOSearcher(object):
         # TODO: Write instance methods that get_objects can use to implement the two types of DateSearch your project
         # TODO: needs to support that then your filters can be applied to. Remember to return the number specified in
         # TODO: the Query.Selectors as well as in the return_type from Query.Selectors
+        result = None
+        if query.date_search.type.value == "equals":
+            result = self.__get_objects_on_date(query.date_search.values[0])
+        else:
+            result = self.__get_objects_between_dates(query.date_search.values[0], query.date_search.values[1])
+
+        result = result[:query.number]
+        return result
+
+    def __get_objects_on_date(self, date):
+        result = set()
+        for key in self.db.orbit_date_to_neos.keys():
+            if key == date:
+                neos = self.db.orbit_date_to_neos[key]
+                result.update(neos)
+        return list(result)
+
+    def __get_objects_between_dates(self, start_date_str, end_date_str):
+        result = []
+        start_date = datetime.strptime(start_date_str, "%m/%d/%y")
+        end_date = datetime.strptime(end_date_str, "%m/%d/%y")
+        for key in self.db.orbit_date_to_neos.keys():
+            date = datetime.strptime(key, "%m/%d/%y")
+            if start_date <= date <= end_date:
+                neos = self.db.orbit_date_to_neos[key]
+                result.extend(neos)
+        return result
