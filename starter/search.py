@@ -63,6 +63,7 @@ class Query(object):
         else:
             return None
 
+
 class Filter(object):
     """
     Object representing optional filter options to be used in the date search for Near Earth Objects.
@@ -93,7 +94,7 @@ class Filter(object):
         """
         Class function that transforms filter options raw input into filters
 
-        :param input: list in format ["filter_option:operation:value_of_option", ...]
+        :param filter_options: list in format ["filter_option:operation:value_of_option", ...]
         :return: defaultdict with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
         """
 

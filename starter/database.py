@@ -38,8 +38,8 @@ class NEODatabase(object):
 
         # TODO: Load data from csv file.
         # TODO: Where will the data be stored?
-        with open(filename) as csvfile:
-            reader = csv.DictReader(csvfile)
+        with open(filename) as csv_file:
+            reader = csv.DictReader(csv_file)
             for row in reader:
                 neo_attributes_list = list(row.items())[:14]
                 neo_attributes_dict = dict(neo_attributes_list)
