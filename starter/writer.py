@@ -18,7 +18,7 @@ class OutputFormat(Enum):
 
 class NEOWriter(object):
     """
-    Python object use to write the results from supported output formatting options.
+    Python object used to write the results from supported output formatting options.
     """
 
     def __init__(self):
@@ -38,3 +38,14 @@ class NEOWriter(object):
         # TODO: Using the OutputFormat, how can we organize our 'write' logic for output to stdout vs to csvfile
         # TODO: into instance methods for NEOWriter? Write instance methods that write() can call to do the necessary
         # TODO: output format.
+        if format == OutputFormat.display.value:
+            return self.display(data)
+        else:
+            self.write_to_csv_file()
+
+    def display(self, data):
+        print(data)
+        return True
+
+    def write_to_csv_file(self):
+        pass
