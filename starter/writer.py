@@ -44,7 +44,12 @@ class NEOWriter(object):
             self.write_to_csv_file()
 
     def display(self, data):
-        print(data)
+        if len(data) == 0:
+            print('No result found')
+        else:
+            for item in data:
+                print(item)
+
         return True
 
     def write_to_csv_file(self):
