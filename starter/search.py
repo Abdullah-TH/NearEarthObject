@@ -1,6 +1,7 @@
+import operator
+
 from collections import namedtuple
 from enum import Enum
-
 from exceptions import UnsupportedFeature
 from models import NearEarthObject, OrbitPath
 from datetime import datetime
@@ -71,10 +72,18 @@ class Filter(object):
     """
     Options = {
         # TODO: Create a dict of filter name to the NearEarthObject or OrbitalPath property
+        'is_hazardous': 'is_potentially_hazardous_asteroid',
+        'diameter': 'estimated_diameter_max_kilometers',
+        'distance': 'miss_distance_kilometers'
     }
 
     Operators = {
         # TODO: Create a dict of operator symbol to an Operators method, see README Task 3 for hint
+        '=': operator.eq,
+        '>': operator.gt,
+        '>=': operator.ge,
+        '<': operator.lt,
+        '<=': operator.le
     }
 
     def __init__(self, field, object, operation, value):
