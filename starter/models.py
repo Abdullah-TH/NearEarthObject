@@ -10,8 +10,10 @@ class NearEarthObject(object):
         :param kwargs:    dict of attributes about a given Near Earth Object, only a subset of attributes used
         """
         # TODO: What instance variables will be useful for storing on the Near Earth Object?
-        self.id = kwargs.get("id")
-        self.name = kwargs.get("name")
+        self.id = kwargs.get('id')
+        self.name = kwargs.get('name')
+        self.is_hazardous = kwargs.get('is_potentially_hazardous_asteroid')
+        self.diameter = kwargs.get('estimated_diameter_max_kilometers')
         self.orbits = []
 
     def update_orbits(self, orbit):

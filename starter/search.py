@@ -50,7 +50,9 @@ class Query(object):
         # TODO: Translate the query parameters into a QueryBuild.Selectors object
         date_search = self.__build_date_search()
         return_object = self.ReturnObjects[self.__parameters["return_object"]]
-        selectors = self.Selectors(date_search, self.__parameters["number"], None, return_object)
+        number = self.__parameters['number']
+        filters = self.__parameters['filters']
+        selectors = self.Selectors(date_search, number, filters, return_object)
         return selectors
 
     def __build_date_search(self):
@@ -125,7 +127,7 @@ class Filter(object):
             result.append(filter_object)
         return result
 
-    def apply(self, results):
+    def apply(self, results, filters):
         """
         Function that applies the filter operation onto a set of results
 
@@ -133,6 +135,21 @@ class Filter(object):
         :return: filtered list of Near Earth Object results
         """
         # TODO: Takes a list of NearEarthObjects and applies the value of its filter operation to the results
+        # NOTE: I'm adding a new parameter, filters
+        filtered_result = []
+        for result in results:
+            if self.__apply_filter(result, filters):
+                filtered_result.append(result)
+        return result
+
+    def __apply_filters(self, result, filters):
+        for filter in filters:
+            if not self.__apply_filter(result, filter):
+                return False
+        return True
+
+    def __apply_filter(self, result: NearEarthObject, filter: Filter):
+        pass
 
 
 
@@ -151,7 +168,7 @@ class NEOSearcher(object):
         self.db = db
         # TODO: What kind of an instance variable can we use to connect DateSearch to how we do search?
 
-    def get_objects(self, query):
+    def get_objects(self, query: Query.Selectors):
         """
         Generic search interface that, depending on the details in the QueryBuilder (query) calls the
         appropriate instance search function, then applys any filters, with distance as the last filter.
@@ -167,10 +184,14 @@ class NEOSearcher(object):
         # TODO: needs to support that then your filters can be applied to. Remember to return the number specified in
         # TODO: the Query.Selectors as well as in the return_type from Query.Selectors
         result = None
+
         if query.date_search.type.value == "equals":
             result = self.__get_objects_on_date(query.date_search.values[0])
         else:
             result = self.__get_objects_between_dates(query.date_search.values[0], query.date_search.values[1])
+
+        if query.filters:
+
 
         result = result[:query.number]
         return result
