@@ -1,6 +1,6 @@
 import operator
 
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 from enum import Enum
 from exceptions import UnsupportedFeature
 from models import NearEarthObject, OrbitPath
@@ -89,7 +89,7 @@ class Filter(object):
     def __init__(self, field, object, operation, value):
         """
         :param field:  str representing field to filter on
-        :param field:  str representing object to filter on
+        :param object:  str representing object to filter on
         :param operation: str representing filter operation to perform
         :param value: str representing value to filter for
         """
@@ -107,7 +107,23 @@ class Filter(object):
         :return: defaultdict with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
         """
 
-        # TODO: return a defaultdict of filters with key of NearEarthObject or OrbitPath and value of empty list or list of Filters
+        # TODO: return a defaultdict of filters with key of NearEarthObject or OrbitPath and
+        #  value of empty list or list of Filters
+        # NOTE: I'm returning a list instead of defaultdict
+        result = []
+        for filter_option in filter_options:
+            items = filter_option.split(':')
+            option = items[0].lower()
+            operation = items[1]
+            value = items[2]
+            object = None
+            if option == 'diameter':
+                object = 'Orbit'
+            else:
+                object = 'NEO'
+            filter_object = Filter(option, object, operation, value)
+            result.append(filter_object)
+        return result
 
     def apply(self, results):
         """
@@ -117,6 +133,8 @@ class Filter(object):
         :return: filtered list of Near Earth Object results
         """
         # TODO: Takes a list of NearEarthObjects and applies the value of its filter operation to the results
+
+
 
 
 class NEOSearcher(object):
