@@ -12,8 +12,8 @@ class NearEarthObject(object):
         # TODO: What instance variables will be useful for storing on the Near Earth Object?
         self.id = kwargs.get('id')
         self.name = kwargs.get('name')
-        self.is_hazardous = kwargs.get('is_potentially_hazardous_asteroid')
-        self.diameter = kwargs.get('estimated_diameter_max_kilometers')
+        self.is_potentially_hazardous_asteroid = bool(kwargs.get('is_potentially_hazardous_asteroid'))
+        self.diameter_min_km = float(kwargs.get('estimated_diameter_min_kilometers'))
         self.orbits = []
 
     def update_orbits(self, orbit):
