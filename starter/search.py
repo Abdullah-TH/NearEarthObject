@@ -203,12 +203,12 @@ class NEOSearcher(object):
         return list(result)
 
     def __get_objects_between_dates(self, start_date_str, end_date_str):
-        result = []
+        result = set()
         start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
         end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
         for key in self.db.orbit_date_to_neos.keys():
             date = datetime.strptime(key, "%Y-%m-%d")
             if start_date <= date <= end_date:
                 neos = self.db.orbit_date_to_neos[key]
-                result.extend(neos)
-        return result
+                result.update(neos)
+        return list(result)

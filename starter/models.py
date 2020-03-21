@@ -35,7 +35,9 @@ class NearEarthObject(object):
         return self.id == other.id
 
     def __repr__(self):
-        result = f'ID: {self.id}\nName: {self.name}\nOrbits:\n'
+        result = f'ID: {self.id}\nName: {self.name}\n' \
+                 f'Is hazardous: {self.is_potentially_hazardous_asteroid}\n' \
+                 f'Diameter min km: {self.diameter_min_km}\nOrbits:\n'
         for orbit in self.orbits:
             result += f'- {orbit.name}\n'
             result += f'  - {orbit.miss_distance_kilometers}\n'
